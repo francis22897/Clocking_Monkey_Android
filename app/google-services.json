@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "640193968467",
+    "firebase_url": "https://clockingmonkey-848bb.firebaseio.com",
+    "project_id": "clockingmonkey-848bb",
+    "storage_bucket": "clockingmonkey-848bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640193968467:android:537990fcec36981c",
+        "android_client_info": {
+          "package_name": "com.clocking.monkey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "640193968467-us5aul5im87k4b6mnlsd77k5gu3n1r57.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.clocking.monkey",
+            "certificate_hash": "afbb23265ed310c2c9a1ebc4d63c7749efed1b70"
+          }
+        },
+        {
+          "client_id": "640193968467-klk2j6jgvv5ct1l92p1iak2oi25d0rvk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPI_RY1DOMNuGHPNAby2k-NrtDgFBDbZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "640193968467-klk2j6jgvv5ct1l92p1iak2oi25d0rvk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
