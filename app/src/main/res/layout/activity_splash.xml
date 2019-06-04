@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SplashActivity"
+    android:background="@color/colorPrimaryDark">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginVertical="@dimen/marginVertical"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:layout_marginHorizontal="@dimen/marginHorizontal"
+        android:paddingVertical="@dimen/paddingVertical"
+        android:elevation="@dimen/elevation">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo_reloj" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/computer_pixel_7"
+            android:layout_marginTop="80dp"
+            android:textAlignment="center"
+            android:textSize="@dimen/textSize"
+            android:textColor="@color/colorDark"
+            android:text="@string/splashActivity_loading_text"/>
+
+    </LinearLayout>
+
+</FrameLayout>

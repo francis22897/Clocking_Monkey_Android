@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ClockIn_Fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.ClockInFragment"
+    android:background="@drawable/fondo">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/marginHorizontal"
+        android:paddingVertical="@dimen/paddingVertical"
+        android:layout_marginVertical="@dimen/marginVerticalFragments"
+        android:elevation="@dimen/elevation"
+        android:background="@color/colorLight"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/paddingHorizontalTextInput">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/logo_mono_100"/>
+
+            <TextView
+                android:layout_marginStart="@dimen/separateHorizontalItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/logo"
+                android:layout_centerVertical="true"
+                android:text="@string/clockIn_fragment_title"
+                android:textSize="@dimen/fragmentTitleSize"
+                android:textAlignment="center"
+                android:textColor="@color/colorDark" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btn_option_QR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/marginHorizontalButton"
+                    android:layout_marginTop="@dimen/separationVerticalButtons"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/colorLight"
+                    android:textAlignment="center"
+                    android:text="@string/QR_option_button_text"/>
+
+                <Button
+                    android:id="@+id/btn_option_NFC"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/marginHorizontalButton"
+                    android:layout_marginVertical="@dimen/separationVerticalButtons"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/colorLight"
+                    android:textAlignment="center"
+                    android:text="@string/NFC_option_button_text"/>
+
+                <Button
+                    android:id="@+id/btn_option_ebeacon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/marginHorizontalButton"
+                    android:layout_marginBottom="@dimen/separationVerticalButtons"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/colorLight"
+                    android:textAlignment="center"
+                    android:text="@string/ebeacon_option_button_text"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>
