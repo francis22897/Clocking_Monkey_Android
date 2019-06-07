@@ -34,6 +34,7 @@
         android:background="@color/colorAccent"
         android:textColor="@color/colorLight"
         android:text="@string/qr_button_clockin"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:enabled="false"/>
 
 </RelativeLayout>
