@@ -9,6 +9,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,8 +21,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.dynamic.IFragmentWrapper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class NFCActivity extends AppCompatActivity {
 
@@ -31,6 +38,8 @@ public class NFCActivity extends AppCompatActivity {
 
     Tag tag;
     Ndef ndef;
+
+    private FirebaseFirestore firebaseFirestore;
     
     String clave = "M9Spr0aclI";
 
@@ -57,6 +66,18 @@ public class NFCActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(NFCActivity.this, "fichaje exito", Toast.LENGTH_SHORT).show();
+
+                firebaseFirestore = FirebaseFirestore.getInstance();
+                Assistance assistance;
+                assistance = new Assistance(false, new Timestamp(new Date()),null ,"prueba");
+                firebaseFirestore.collection("Assists").add(assistance).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(NFCActivity.this, "Asistencia Registrada!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
     }
