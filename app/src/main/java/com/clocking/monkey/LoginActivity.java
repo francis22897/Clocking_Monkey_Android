@@ -1,5 +1,6 @@
 package com.clocking.monkey;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     SharedPreferences prefs;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +58,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if(Strings.isNullOrEmpty(email.getText().toString()) || Strings.isNullOrEmpty(password.getText().toString())){
                     Toast.makeText(this.getApplicationContext(), "No puedes dejar campos vacíos", Toast.LENGTH_LONG).show();
                 }else{
+                    dialog = ProgressDialog.show(this, "",
+                            "Cargando... espere por favor", true);
                     firebaseAuth.signInWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()){
                                 addCredentials();
                             }else{
+                                dialog.dismiss();
                                 Toast.makeText(getApplicationContext(), "Fallo al realizar el logueo", Toast.LENGTH_LONG).show();
                             }
                         }
@@ -74,6 +79,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void addCredentials(){
+
         firebaseFirestore.collection("Users").whereEqualTo("email", email.getText().toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -90,10 +96,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         editor.putString("user", user.toJson());
                         editor.apply();
 
+                        dialog.dismiss();
+
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
                 }else{
+                    dialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Error al buscar usuario", Toast.LENGTH_LONG).show();
                 }
             }
