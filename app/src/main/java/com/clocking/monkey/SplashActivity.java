@@ -23,20 +23,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        //Compruebo si hay datos del usuario logueado guardados en las shared preference
-        SharedPreferences prefs = getSharedPreferences("UserData", Context.MODE_PRIVATE);
-        String json = prefs.getString("user", "");
-        //Log.i("PRUEBA", json);
-
-        if(! json.equals("")){
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-            startActivity(intent);
-        }else {
-            //Creo la instancia de firestore
-            firebaseFirestore = FirebaseFirestore.getInstance();
-
-            getAllowedUsers();
-        }
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        getAllowedUsers();
     }
 
     private void getAllowedUsers(){
