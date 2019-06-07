@@ -1,6 +1,8 @@
 package com.clocking.monkey;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,12 +23,20 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        //Creo la instancia de firestore
-        firebaseFirestore = FirebaseFirestore.getInstance();
+        //Compruebo si hay datos del usuario logueado guardados en las shared preference
+        SharedPreferences prefs = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        String json = prefs.getString("user", "");
+        //Log.i("PRUEBA", json);
 
-        getAllowedUsers();
+        if(! json.equals("")){
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            startActivity(intent);
+        }else {
+            //Creo la instancia de firestore
+            firebaseFirestore = FirebaseFirestore.getInstance();
 
-        //FALTA COMPROBAR QUE SI YA HAY UN USUARIO LOGUEADO NO OBTENGA LOS USUARIOS
+            getAllowedUsers();
+        }
     }
 
     private void getAllowedUsers(){
