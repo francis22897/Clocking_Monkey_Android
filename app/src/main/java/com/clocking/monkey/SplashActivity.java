@@ -46,7 +46,7 @@ public class SplashActivity extends AppCompatActivity {
 
                     //Log.d("PRUEBA", String.valueOf(sqLiteDB.searchUser("francisco.adan@escuelaestech.es")));
 
-                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
             }
