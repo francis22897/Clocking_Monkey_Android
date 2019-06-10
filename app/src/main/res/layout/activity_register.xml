@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity"
+    android:background="@drawable/fondo">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginHorizontal="@dimen/marginHorizontal"
+        android:paddingVertical="@dimen/paddingVertical"
+        android:background="@color/background"
+        android:layout_marginVertical="@dimen/marginVertical"
+        android:layout_gravity="center"
+        android:elevation="@dimen/elevation">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo_reloj_sin_nombre150"/>
+
+            <!--
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/paddingVerticalRegisterFieldsContent">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/paddingHorizontalTextInput">
+
+                        <EditText
+                            android:id="@+id/text_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="@string/email_text"
+                            android:singleLine="true" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/paddingHorizontalTextInput">
+
+
+                        <EditText
+                            android:id="@+id/text_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="@string/password_text"
+                            android:singleLine="true"
+                            android:inputType="textPassword"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/register_button"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/marginHorizontalButton"
+                        android:background="@color/colorAccent"
+                        android:textColor="@color/background"
+                        android:text="@string/register_button_text"/>
+                </LinearLayout>
+
+            <!-- </ScrollView>-->
+
+        </LinearLayout>
+    </FrameLayout>
+</FrameLayout>
