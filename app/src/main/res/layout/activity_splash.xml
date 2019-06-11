@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SplashActivity"
-    android:background="@color/colorPrimaryDark">
+    android:background="@drawable/fondo_splash">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,24 +15,22 @@
         android:orientation="vertical"
         android:layout_marginVertical="@dimen/marginVertical"
         android:layout_gravity="center"
-        android:background="@color/colorPrimary"
         android:layout_marginHorizontal="@dimen/marginHorizontal"
-        android:paddingVertical="@dimen/paddingVertical"
-        android:elevation="@dimen/elevation">
+        android:paddingVertical="@dimen/paddingVertical">
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo_reloj" />
+            android:layout_height="400dp"
+            android:src="@drawable/logo_1" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/computer_pixel_7"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="30dp"
             android:textAlignment="center"
             android:textSize="@dimen/textSize"
-            android:textColor="@color/colorDark"
+            android:textColor="@color/colorText"
             android:text="@string/splashActivity_loading_text"/>
 
     </LinearLayout>
