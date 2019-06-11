@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EbeaconActivity"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:background="@drawable/fondo_splash">
+
+    <Button
+        android:id="@+id/clockin_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fichar"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        tools:ignore="MissingConstraints"
+        android:background="@color/colorAccent"
+
+        />
+
+</LinearLayout>
