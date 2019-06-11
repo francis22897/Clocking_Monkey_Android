@@ -80,6 +80,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
             case R.id.btn_register:
+
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+
                 break;
         }
     }
@@ -110,6 +114,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
+                    }else{
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "No se han encontrado datos del usuario en la bd", Toast.LENGTH_LONG).show();
                     }
                 }else{
                     dialog.dismiss();
