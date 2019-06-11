@@ -3,7 +3,7 @@
     <dimen name="marginHorizontal">30dp</dimen>
     <dimen name="paddingVertical">30dp</dimen>
     <dimen name="marginVertical">70dp</dimen>
-    <dimen name="textSize">25dp</dimen>
+    <dimen name="textSize">35dp</dimen>
     <dimen name="marginHorizontalButton">20dp</dimen>
     <dimen name="paddingHorizontalTextInput">20dp</dimen>
     <dimen name="marginTopButtonContent">30dp</dimen>
