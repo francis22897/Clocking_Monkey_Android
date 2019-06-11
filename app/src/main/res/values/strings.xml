@@ -18,8 +18,8 @@
     <string name="QR_option_button_text">QR</string>
     <string name="NFC_option_button_text">NFC</string>
     <string name="ebeacon_option_button_text">Ebeacon</string>
-
-
+    <string name="clockin_option_text">ClockIn</string>
+    <string name="register_option_text">Register</string>
     <string name="qr_name">Scan_QR</string>
     <string name="scan_qr">Scan QR</string>
 </resources>
