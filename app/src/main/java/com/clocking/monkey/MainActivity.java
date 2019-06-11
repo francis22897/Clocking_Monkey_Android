@@ -1,6 +1,7 @@
 package com.clocking.monkey;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if(id == R.id.profile){
+            startActivity(new Intent(MainActivity.this, ProfileActivity.class));
 
         }
 
