@@ -5,15 +5,15 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/fondo"
+    android:background="@color/colorPrimary"
     tools:context=".NFCActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_nfc"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimaryDark"
-        app:titleTextColor="@color/colorLight"
+        android:background="?attr/colorSecondary"
+        app:titleTextColor="@color/colorAccent"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/marginHorizontalButton"
         android:background="@color/colorAccent"
-        android:textColor="@color/colorLight"
+        android:textColor="@color/colorText"
         android:text="@string/qr_button_clockin"
         android:layout_alignParentBottom="true"
         android:enabled="false"/>

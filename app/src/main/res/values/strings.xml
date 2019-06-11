@@ -20,4 +20,6 @@
     <string name="ebeacon_option_button_text">Ebeacon</string>
     <string name="qr_button_back">Atrás</string>
     <string name="qr_button_clockin">Fichar</string>
+    <string name="clockin_option_text">ClockIn</string>
+    <string name="register_option_text">Register</string>
 </resources>

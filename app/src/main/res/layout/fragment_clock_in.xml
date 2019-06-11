@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ClockIn_Fragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Fragments.ClockInFragment"
-    android:background="@drawable/fondo">
-
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/ClockIn_Fragment"
+        tools:context=".Fragments.ClockInFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/marginHorizontal"
-        android:paddingVertical="@dimen/paddingVertical"
-        android:layout_marginVertical="@dimen/marginVerticalFragments"
-        android:elevation="@dimen/elevation"
-        android:background="@color/colorLight"
+        android:background="@color/colorPrimary"
         android:orientation="vertical">
 
+    <!--
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/paddingHorizontalTextInput">
+            android:paddingHorizontal="@dimen/paddingHorizontalTextInput"
+            android:layout_marginTop="20dp">
 
             <ImageView
                 android:id="@+id/logo"
@@ -38,9 +32,11 @@
                 android:text="@string/clockIn_fragment_title"
                 android:textSize="@dimen/fragmentTitleSize"
                 android:textAlignment="center"
-                android:textColor="@color/colorDark" />
+                android:textColor="@color/colorText" />
 
         </RelativeLayout>
+
+        -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,7 +56,7 @@
                     android:layout_marginHorizontal="@dimen/marginHorizontalButton"
                     android:layout_marginTop="@dimen/separationVerticalButtons"
                     android:background="@color/colorAccent"
-                    android:textColor="@color/colorLight"
+                    android:textColor="@color/colorText"
                     android:textAlignment="center"
                     android:text="@string/QR_option_button_text"/>
 
@@ -71,7 +67,7 @@
                     android:layout_marginHorizontal="@dimen/marginHorizontalButton"
                     android:layout_marginVertical="@dimen/separationVerticalButtons"
                     android:background="@color/colorAccent"
-                    android:textColor="@color/colorLight"
+                    android:textColor="@color/colorText"
                     android:textAlignment="center"
                     android:text="@string/NFC_option_button_text"/>
 
@@ -82,11 +78,9 @@
                     android:layout_marginHorizontal="@dimen/marginHorizontalButton"
                     android:layout_marginBottom="@dimen/separationVerticalButtons"
                     android:background="@color/colorAccent"
-                    android:textColor="@color/colorLight"
+                    android:textColor="@color/colorText"
                     android:textAlignment="center"
                     android:text="@string/ebeacon_option_button_text"/>
             </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
-</FrameLayout>
