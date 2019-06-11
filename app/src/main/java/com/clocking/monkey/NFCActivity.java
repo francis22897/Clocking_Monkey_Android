@@ -56,8 +56,6 @@ public class NFCActivity extends AppCompatActivity {
         initNFC();
 
 
-
-
     }
 
     private void init(){
@@ -94,7 +92,7 @@ public class NFCActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_clockin, menu);
+        inflater.inflate(R.menu.menu_fragments, menu);
         return true;
     }
 
@@ -160,5 +158,7 @@ public class NFCActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
 }
