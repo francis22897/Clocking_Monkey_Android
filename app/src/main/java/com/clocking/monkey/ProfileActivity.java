@@ -1,10 +1,12 @@
 package com.clocking.monkey;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +25,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.L;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,7 +37,7 @@ import javax.security.auth.login.LoginException;
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     SharedPreferences prefs;
-    Button logoutBtn, saveBtn;
+    Button logoutBtn, saveBtn, passBtn;
     EditText name, firstLastname, secondLastname;
     FirebaseFirestore firebaseFirestore;
     FirebaseAuth firebaseAuth;
@@ -60,6 +64,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         logoutBtn = findViewById(R.id.logout_btn);
         saveBtn = findViewById(R.id.saveChanges_btn);
+        passBtn = findViewById(R.id.changePassword_btn);
+
         prefs = getSharedPreferences("UserData", Context.MODE_PRIVATE);
 
         if(! prefs.getString("user", "").equals("")){
@@ -68,6 +74,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         logoutBtn.setOnClickListener(this);
         saveBtn.setOnClickListener(this);
+        passBtn.setOnClickListener(this);
     }
 
     private void loadFields(){
@@ -128,6 +135,59 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
                 Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.changePassword_btn:
+
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+                View mView = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
+                final EditText oldPassword = mView.findViewById(R.id.oldPassword_text);
+                final EditText newPassword = mView.findViewById(R.id.newPassword_text);
+                final EditText confirmPassword = mView.findViewById(R.id.confirmPassword_text);
+                Button changePasswordBtn = mView.findViewById(R.id.changePassword_confirm_btn);
+
+                mBuilder.setView(mView);
+                final AlertDialog alertDialog = mBuilder.create();
+                alertDialog.show();
+
+                changePasswordBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(!Strings.isEmptyOrWhitespace(oldPassword.getText().toString()) && !Strings.isEmptyOrWhitespace(newPassword.getText().toString()) && !Strings.isEmptyOrWhitespace(confirmPassword.getText().toString())){
+                            if(newPassword.getText().toString().equals(confirmPassword.getText().toString())) {
+                                AuthCredential credential = EmailAuthProvider.getCredential(firebaseAuth.getCurrentUser().getEmail(), oldPassword.getText().toString());
+                                firebaseAuth.getCurrentUser().reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+
+                                            firebaseAuth.getCurrentUser().updatePassword(newPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()){
+                                                        Toast.makeText(getApplicationContext(), "Se ha actualizado la contraseña de forma correcta", Toast.LENGTH_LONG).show();
+                                                        alertDialog.dismiss();
+                                                    }else{
+                                                        Log.i("PRUEBA", task.getException().getMessage());
+                                                        Toast.makeText(getApplicationContext(), "Ha habido un fallo al actualizar la contraseña", Toast.LENGTH_LONG).show();
+                                                        alertDialog.dismiss();
+                                                    }
+                                                }
+                                            });
+
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "La contraseña antigua está mal", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Las contraseñas deben coincidir", Toast.LENGTH_LONG).show();
+                            }
+                        }else{
+                            Toast.makeText(getApplicationContext(), "No puedes dejar campos vacíos", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
                 break;
         }
     }
@@ -190,13 +250,5 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-        /*
-        firebaseFirestore.collection("Users").document().set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-
-            }
-        });
-        */
     }
 }

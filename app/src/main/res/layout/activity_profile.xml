@@ -17,78 +17,82 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-  <LinearLayout
+  <ScrollView
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:orientation="vertical"
-      android:paddingHorizontal="@dimen/marginHorizontal"
-      android:gravity="center">
-
-      <TextView
+      android:layout_height="match_parent">
+      <LinearLayout
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:textColor="@color/colorAccent"
-          android:text="@string/name_text" />
+          android:layout_height="match_parent"
+          android:orientation="vertical"
+          android:paddingHorizontal="@dimen/marginHorizontal"
+          android:layout_gravity="center_vertical">
 
-      <EditText
-          android:id="@+id/profile_name"
-          android:layout_marginVertical="@dimen/profile_EditText_marginVertical"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:textColor="@color/colorText"/>
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textColor="@color/colorAccent"
+              android:text="@string/name_text" />
 
-      <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:textColor="@color/colorAccent"
-          android:text="@string/first_lastname_text" />
+          <EditText
+              android:id="@+id/profile_name"
+              android:layout_marginVertical="@dimen/profile_EditText_marginVertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textColor="@color/colorText"/>
 
-      <EditText
-          android:id="@+id/profile_firstLastname"
-          android:layout_marginVertical="@dimen/profile_EditText_marginVertical"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:textColor="@color/colorText"/>
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textColor="@color/colorAccent"
+              android:text="@string/first_lastname_text" />
 
-      <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:textColor="@color/colorAccent"
-          android:text="@string/secondLastname_text" />
+          <EditText
+              android:id="@+id/profile_firstLastname"
+              android:layout_marginVertical="@dimen/profile_EditText_marginVertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textColor="@color/colorText"/>
 
-      <EditText
-          android:id="@+id/profile_secondLastname"
-          android:layout_marginVertical="@dimen/profile_EditText_marginVertical"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:textColor="@color/colorText"/>
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textColor="@color/colorAccent"
+              android:text="@string/secondLastname_text" />
 
-      <Button
-          android:id="@+id/saveChanges_btn"
-          android:layout_marginTop="@dimen/paddingVertical"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@color/colorAccent"
-          android:textColor="@color/colorText"
-          android:text="@string/saveChanges_btn_text"/>
+          <EditText
+              android:id="@+id/profile_secondLastname"
+              android:layout_marginVertical="@dimen/profile_EditText_marginVertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textColor="@color/colorText"/>
 
-      <Button
-          android:id="@+id/changePassword_btn"
-          android:layout_marginTop="@dimen/paddingVertical"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@color/colorAccent"
-          android:textColor="@color/colorText"
-          android:text="@string/change_password_btn"/>
+          <Button
+              android:id="@+id/saveChanges_btn"
+              android:layout_marginTop="@dimen/paddingVertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/colorAccent"
+              android:textColor="@color/colorText"
+              android:text="@string/saveChanges_btn_text"/>
 
-      <Button
-          android:id="@+id/logout_btn"
-          android:layout_marginTop="@dimen/paddingVertical"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@color/colorText"
-          android:textColor="@color/colorAccent"
-          android:text="@string/logout_btn"/>
+          <Button
+              android:id="@+id/changePassword_btn"
+              android:layout_marginTop="@dimen/paddingVertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/colorAccent"
+              android:textColor="@color/colorText"
+              android:text="@string/change_password_btn"/>
 
-  </LinearLayout>
+          <Button
+              android:id="@+id/logout_btn"
+              android:layout_marginTop="@dimen/paddingVertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/colorText"
+              android:textColor="@color/colorAccent"
+              android:text="@string/logout_btn"/>
+
+      </LinearLayout>
+  </ScrollView>
 </LinearLayout>
