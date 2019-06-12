@@ -19,6 +19,7 @@ import android.view.MenuItem;
 
 import com.clocking.monkey.Fragments.AssistsFragment;
 import com.clocking.monkey.Fragments.ClockInFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences prefs = getSharedPreferences("UserData", Context.MODE_PRIVATE);
-        String json = prefs.getString("user", "");
-
-        Log.i("PRUEBA", json);
+        Log.i("PRUEBA", FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
