@@ -43,6 +43,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     FirebaseAuth firebaseAuth;
     ProgressDialog dialog;
 
+    View mView;
+    EditText oldPassword, newPassword, confirmPassword;
+    Button changePasswordBtn;
+    AlertDialog alertDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,14 +144,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.changePassword_btn:
 
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
-                View mView = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
-                final EditText oldPassword = mView.findViewById(R.id.oldPassword_text);
-                final EditText newPassword = mView.findViewById(R.id.newPassword_text);
-                final EditText confirmPassword = mView.findViewById(R.id.confirmPassword_text);
-                Button changePasswordBtn = mView.findViewById(R.id.changePassword_confirm_btn);
+                mView = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
+                oldPassword = mView.findViewById(R.id.oldPassword_text);
+                newPassword = mView.findViewById(R.id.newPassword_text);
+                confirmPassword = mView.findViewById(R.id.confirmPassword_text);
+                changePasswordBtn = mView.findViewById(R.id.changePassword_confirm_btn);
 
                 mBuilder.setView(mView);
-                final AlertDialog alertDialog = mBuilder.create();
+                alertDialog = mBuilder.create();
                 alertDialog.show();
 
                 changePasswordBtn.setOnClickListener(new View.OnClickListener() {
@@ -154,31 +159,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     public void onClick(View v) {
                         if(!Strings.isEmptyOrWhitespace(oldPassword.getText().toString()) && !Strings.isEmptyOrWhitespace(newPassword.getText().toString()) && !Strings.isEmptyOrWhitespace(confirmPassword.getText().toString())){
                             if(newPassword.getText().toString().equals(confirmPassword.getText().toString())) {
-                                AuthCredential credential = EmailAuthProvider.getCredential(firebaseAuth.getCurrentUser().getEmail(), oldPassword.getText().toString());
-                                firebaseAuth.getCurrentUser().reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
 
-                                            firebaseAuth.getCurrentUser().updatePassword(newPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if(task.isSuccessful()){
-                                                        Toast.makeText(getApplicationContext(), "Se ha actualizado la contraseña de forma correcta", Toast.LENGTH_LONG).show();
-                                                        alertDialog.dismiss();
-                                                    }else{
-                                                        Log.i("PRUEBA", task.getException().getMessage());
-                                                        Toast.makeText(getApplicationContext(), "Ha habido un fallo al actualizar la contraseña", Toast.LENGTH_LONG).show();
-                                                        alertDialog.dismiss();
-                                                    }
-                                                }
-                                            });
-
-                                        } else {
-                                            Toast.makeText(getApplicationContext(), "La contraseña antigua está mal", Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-                                });
+                                if(newPassword.getText().toString().length() >= 6) {
+                                    changePassword();
+                                }else{
+                                    Toast.makeText(getApplicationContext(), "La contraseña deben tener mínimo 6 caracteres", Toast.LENGTH_LONG).show();
+                                }
                             }else{
                                 Toast.makeText(getApplicationContext(), "Las contraseñas deben coincidir", Toast.LENGTH_LONG).show();
                             }
@@ -187,9 +173,44 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         }
                     }
                 });
-
                 break;
         }
+    }
+
+    private void changePassword(){
+        dialog = ProgressDialog.show(this, "",
+                "Cargando... espere por favor", true);
+
+        AuthCredential credential = EmailAuthProvider.getCredential(firebaseAuth.getCurrentUser().getEmail(), oldPassword.getText().toString());
+        firebaseAuth.getCurrentUser().reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+
+                    firebaseAuth.getCurrentUser().updatePassword(newPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                dialog.dismiss();
+                                alertDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "Se ha actualizado la contraseña de forma correcta", Toast.LENGTH_LONG).show();
+
+                            } else {
+                                dialog.dismiss();
+                                alertDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "Ha habido un fallo al actualizar la contraseña", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
+                } else {
+                    dialog.dismiss();
+                    alertDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "La contraseña antigua está mal", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
 
     private void addUser(final User user){
