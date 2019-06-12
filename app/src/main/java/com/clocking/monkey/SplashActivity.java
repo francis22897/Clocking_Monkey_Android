@@ -27,8 +27,16 @@ public class SplashActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         if(firebaseAuth.getCurrentUser() != null){
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-            startActivity(intent);
+            SharedPreferences prefs = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+            String json = prefs.getString("user", "");
+
+            if(!json.equals("")){
+                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                startActivity(intent);
+            }else{
+                Intent intent = new Intent(SplashActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
         }else{
             firebaseFirestore = FirebaseFirestore.getInstance();
             getAllowedUsers();

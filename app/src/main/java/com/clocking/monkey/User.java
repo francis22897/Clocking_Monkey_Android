@@ -3,10 +3,10 @@ package com.clocking.monkey;
 import com.google.gson.Gson;
 
 public class User {
-    String email;
-    String name;
-    String first_lastname;
-    String second_lastname;
+    private String email;
+    private String name;
+    private String first_lastname;
+    private String second_lastname;
 
     public User(String email, String name, String first_lastname, String second_lastname) {
         this.email = email;
@@ -53,7 +53,7 @@ public class User {
         return json;
     }
 
-    public User fromJSON(String json){
+    public static User fromJSON(String json){
         Gson gson = new Gson();
         return gson.fromJson(json, User.class);
     }

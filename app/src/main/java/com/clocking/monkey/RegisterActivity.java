@@ -113,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
 
                     // Una vez registrado lo lleva al Login
-                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
                     startActivity(intent);
 
                 }else{

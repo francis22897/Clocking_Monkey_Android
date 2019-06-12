@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i("PRUEBA", FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        SharedPreferences prefs = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        String json = prefs.getString("user", "");
+        Log.i("PRUEBA", json);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

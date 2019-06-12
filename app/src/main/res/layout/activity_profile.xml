@@ -64,6 +64,16 @@
           android:textColor="@color/colorText"/>
 
       <Button
+          android:id="@+id/saveChanges_btn"
+          android:layout_marginTop="@dimen/paddingVertical"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@color/colorAccent"
+          android:textColor="@color/colorText"
+          android:text="@string/saveChanges_btn_text"/>
+
+      <Button
+          android:id="@+id/changePassword_btn"
           android:layout_marginTop="@dimen/paddingVertical"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -72,6 +82,7 @@
           android:text="@string/change_password_btn"/>
 
       <Button
+          android:id="@+id/logout_btn"
           android:layout_marginTop="@dimen/paddingVertical"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"

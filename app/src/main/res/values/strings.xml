@@ -4,10 +4,7 @@
     <string name="register_button_text">Registro</string>
     <string name="confirmPassword_text">Confirma tu contraseña</string>
     <string name="password_text">Contraseña</string>
-    <string name="dni_text">DNI</string>
     <string name="email_text">Email</string>
-    <string name="lastname_text">Apellidos</string>
-    <string name="name_text">Nombre</string>
     <string name="login_button_text">Login</string>
     <string name="profile_menuItem_title">Perfil</string>
 
@@ -28,4 +25,5 @@
     <string name="first_lastname_text">Primer Apellido</string>
     <string name="change_password_btn">Cambiar contraseña</string>
     <string name="logout_btn">Desloguearse</string>
+    <string name="saveChanges_btn_text">Guardar Cambios</string>
 </resources>
