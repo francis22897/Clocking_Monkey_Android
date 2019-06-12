@@ -24,7 +24,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     EditText email, password;
     Button btnLogin, btnRegister;
-    SharedPreferences prefs;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
     ProgressDialog dialog;
@@ -46,8 +45,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        //Inicializo las shared prefences
-        prefs = getSharedPreferences("UserData", Context.MODE_PRIVATE);
 
         btnLogin.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
@@ -93,21 +90,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (task.isSuccessful()) {
                     //En caso de que haya más de un registro quiere decir que lo ha encontrado
                     if (task.getResult().getDocuments().size() > 0) {
-                        //Recojo los datos del usuario
-                        String email = task.getResult().getDocuments().get(0).getData().get("email").toString();
-                        String name = task.getResult().getDocuments().get(0).getData().get("name").toString();
-                        String first_lastname = task.getResult().getDocuments().get(0).getData().get("first_lastname").toString();
-                        String second_lastname = task.getResult().getDocuments().get(0).getData().get("second_lastname").toString();
-
-                        User user = new User(email, name, first_lastname, second_lastname);
-
-                        //Guardo sus datos en shared preference, para que no necesite loguearse
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("user", user.toJson());
-                        editor.apply();
-
-                        dialog.dismiss();
-
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                     }else{
