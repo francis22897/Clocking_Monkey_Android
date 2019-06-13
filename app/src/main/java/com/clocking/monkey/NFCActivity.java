@@ -22,50 +22,101 @@ import android.widget.Toast;
 
 import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class NFCActivity extends AppCompatActivity {
 
     Button btnClockinNfc;
-
     NfcAdapter nfcAdapter;
+    Boolean type;
 
     Tag tag;
     Ndef ndef;
 
     private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth firebaseAuth;
     
     String clave = "M9Spr0aclI";
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfc);
-        Toolbar toolbar = findViewById(R.id.toolbar_nfc);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         init();
+
+        checkAssitance();
+
         initNFC();
-
-
     }
+
+    private void checkAssitance() {
+        firebaseFirestore.collection("Assists").whereEqualTo("email", firebaseAuth.getCurrentUser().getEmail()).orderBy("date", Query.Direction.DESCENDING).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.getResult().getDocuments().size() > 0) {
+                    Timestamp time = (Timestamp) task.getResult().getDocuments().get(0).getData().get("date");
+                    Date date = new Date(time.getSeconds() * 1000);
+                    Date now = new Date();
+                    if(date.getDate() == now.getDate() && date.getMonth() == now.getMonth() && date.getYear() == now.getYear()){
+                        Log.i("PRUEBA", "MISMA FECHA");
+                        type = (Boolean) task.getResult().getDocuments().get(0).getData().get("type");
+                    }else{
+                        if((Boolean) task.getResult().getDocuments().get(0).getData().get("type")){
+                            try {
+
+                                SimpleDateFormat formatter=new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                                Date p = formatter.parse(new SimpleDateFormat("dd/MM/yyyy").format(date) + " 22:00");
+
+                                Assistance assistance = new Assistance(new Timestamp(p), firebaseAuth.getCurrentUser().getEmail(), true, false);
+                                firebaseFirestore.collection("Assists").add(assistance).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                        if (task.isSuccessful()){
+                                            Toast.makeText(NFCActivity.this, "Asistencia Registrada!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            } catch (ParseException e) {
+                                Log.i("PRUEBA", e.getMessage());
+                            }
+
+
+                        }
+                    }
+                }
+            }
+        });
+    }
+
 
     private void init(){
         btnClockinNfc = findViewById(R.id.NFCActivity_btn_clockin);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        /*
         btnClockinNfc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(NFCActivity.this, "fichaje exito", Toast.LENGTH_SHORT).show();
 
-                firebaseFirestore = FirebaseFirestore.getInstance();
                 Assistance assistance;
                 assistance = new Assistance(false, new Timestamp(new Date()),null ,"prueba");
                 firebaseFirestore.collection("Assists").add(assistance).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -78,6 +129,8 @@ public class NFCActivity extends AppCompatActivity {
                 });
             }
         });
+
+        */
     }
 
     private void initNFC(){
