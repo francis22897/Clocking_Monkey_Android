@@ -22,4 +22,9 @@
     <string name="qr_button_clockin">Fichar</string>
     <string name="clockin_option_text">ClockIn</string>
     <string name="register_option_text">Register</string>
+    <string name="comment_et_hint">Escribe un comentario...</string>
+    <string name="comment_title">¿Quieres explicar por qué has fichado para entrar y salir de forma tan seguida?</string>
+    <string name="comment_btn_text">Guardar Comentario</string>
+    <string name="inBtn_text">ENTRADA</string>
+    <string name="outBtn_text">SALIDA</string>
 </resources>

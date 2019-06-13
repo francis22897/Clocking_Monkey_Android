@@ -8,16 +8,18 @@ import java.util.Date;
 
 public class Assistance {
 
-    Timestamp date;
-    String email;
-    Boolean fail;
-    Boolean type;
+    private Timestamp date;
+    private String email;
+    private Boolean fail;
+    private Boolean type;
+    private String comment;
 
-    public Assistance(Timestamp date, String email, Boolean fail, Boolean type) {
+    public Assistance(Timestamp date, String email, Boolean fail, Boolean type, String comment) {
         this.date = date;
         this.email = email;
         this.fail = fail;
         this.type = type;
+        this.comment = comment;
     }
 
     public Timestamp getDate() {
@@ -52,6 +54,14 @@ public class Assistance {
         this.type = type;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     @Override
     public String toString() {
         return "Assistance{" +
@@ -59,6 +69,7 @@ public class Assistance {
                 ", email='" + email + '\'' +
                 ", fail=" + fail +
                 ", type=" + type +
+                ", comment='" + comment + '\'' +
                 '}';
     }
 }
