@@ -13,6 +13,8 @@
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -25,6 +27,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".NFCActivity"></activity>
+        <activity android:name=".EbeaconActivity"></activity>
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

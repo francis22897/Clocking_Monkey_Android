@@ -14,4 +14,5 @@
     <dimen name="separateHorizontalItems">20dp</dimen>
     <dimen name="fragmentTitleSize">20dp</dimen>
     <dimen name="profile_EditText_marginVertical">10dp</dimen>
+    <dimen name="btnClockIn_marginTop">90dp</dimen>
 </resources>

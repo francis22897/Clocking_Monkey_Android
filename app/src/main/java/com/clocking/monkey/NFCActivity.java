@@ -48,16 +48,19 @@ public class NFCActivity extends AppCompatActivity {
 
     private Button btnClockinNfc;
     private NfcAdapter nfcAdapter;
+
     private Boolean type;
     private Date date;
     private String comment;
     private ProgressDialog dialog;
 
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth firebaseAuth;
+
     private Tag tag;
     private Ndef ndef;
 
-    private FirebaseFirestore firebaseFirestore;
-    private FirebaseAuth firebaseAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -347,6 +350,8 @@ public class NFCActivity extends AppCompatActivity {
                 ndef.connect();
                 NdefMessage ndefMessage = ndef.getNdefMessage();
                 String message = new String(ndefMessage.getRecords()[0].getPayload());
+
+                //Si lee el nfc habilita el botón
 
                 if (message.equals(Utils.NFC_KEY)){
                     btnClockinNfc.setEnabled(true);

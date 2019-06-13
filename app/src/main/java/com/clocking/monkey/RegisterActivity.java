@@ -1,5 +1,6 @@
 package com.clocking.monkey;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,6 +30,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
+    ProgressDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +70,9 @@ public class RegisterActivity extends AppCompatActivity {
         final String email = textEmail.getText().toString().trim();
         final String password = textPassword.getText().toString().trim();
 
+        dialog = ProgressDialog.show(this, "",
+                "Cargando... espere por favor", true);
+
         if (validation(email, password)) {
             firebaseFirestore.collection("AllowedUsers").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -76,18 +82,21 @@ public class RegisterActivity extends AppCompatActivity {
                         if (existUser > 0) {
                             register(email, password);
                         } else {
+                            dialog.dismiss();
                             Toast.makeText(RegisterActivity.this, "¡No puedes registrate!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
             });
+        }else{
+            dialog.dismiss();
+            Toast.makeText(getApplicationContext(),"Campos obligatorios", Toast.LENGTH_SHORT).show();
         }
     }
 
     private boolean validation(String email,String password){
         boolean isValid = true;
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
-            Toast.makeText(getApplicationContext(),"Campos obligatorios", Toast.LENGTH_SHORT).show();
             isValid = false;
         }
         return isValid;
@@ -100,6 +109,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void register(String email, String password){
+
         firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -111,12 +121,13 @@ public class RegisterActivity extends AppCompatActivity {
                     if (!user.isEmailVerified()){
                         user.sendEmailVerification();
                     }
-
-                    // Una vez registrado lo lleva al Login
+                    dialog.dismiss();
+                    // Una vez registrado lo lleva al Perfil
                     Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
                     startActivity(intent);
 
                 }else{
+                    dialog.dismiss();
                     if (task.getException() instanceof FirebaseAuthUserCollisionException){
                         Toast.makeText(getApplicationContext(),"El usuario ya está registrado",Toast.LENGTH_SHORT).show();
                     }else{
