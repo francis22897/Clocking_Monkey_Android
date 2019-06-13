@@ -13,7 +13,7 @@
         android:gravity="center"
         android:layout_marginHorizontal="@dimen/marginHorizontal"
         android:paddingVertical="@dimen/paddingVertical"
-        android:background="@color/background"
+
         android:layout_marginVertical="@dimen/marginVertical"
         android:layout_gravity="center"
         android:elevation="@dimen/elevation">
@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/marginHorizontalButton"
                         android:background="@color/colorAccent"
-                        android:textColor="@color/background"
+                        android:textColor="@color/colorPrimary"
                         android:text="@string/register_button_text"/>
                 </LinearLayout>
 

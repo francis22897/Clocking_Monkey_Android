@@ -16,10 +16,22 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.SparseArray;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.google.android.gms.vision.CameraSource;
+import com.google.android.gms.vision.Detector;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -31,6 +43,13 @@ public class QrActivity extends AppCompatActivity {
     private Button buttonScan;
     private final int PERMISSIONS_REQUEST_CAMERA = 1;
 
+    private CameraSource cameraSource;
+    private SurfaceView cameraView;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
+
+
 
 
     @Override
@@ -40,8 +59,9 @@ public class QrActivity extends AppCompatActivity {
 
         initPermissions();
         initUI();
+        initScan();
 
-
+/*
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -61,37 +81,45 @@ public class QrActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }*/
+
+        /*//location
+        float metros = 10;
+        float[] distance = new float[1];
+        Location.distanceBetween(38.094259, -3.631208, location.getLatitude(), location.getLongitude(), distance);
+
+        if (distance[0] / metros < 1) {
+
+
+
+
+        } else {
+
+
+
         }
+*/
 
 
         buttonScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(QrActivity.this, ScanActivity.class);
-                startActivity(intent);
 
 
-                //location
-                float metros = 10;
-                float[] distance = new float[1];
-                Location.distanceBetween(38.094259, -3.631208, location.getLatitude(), location.getLongitude(), distance);
 
-                if (distance[0] / metros > 1) {
-                    Toast.makeText(getApplicationContext(), "Estas fuera del area para poder fichar. Area: " + metros + " m",
-                            Toast.LENGTH_LONG).show();
-                } else {
+                //firestore
+               // Assists assists = new Assists;
 
-                    Toast.makeText(getApplicationContext(), "¡¡Has fichado correctamente!!." + "\n" + "Estas dentro del rango de: " + metros + " m",
-                            Toast.LENGTH_LONG).show();
-
-
-                }
             }
         });
     }
 
             private void initUI () {
                 buttonScan = findViewById(R.id.button_scan_qr);
+                cameraView = findViewById(R.id.camera_view);
+
+                firebaseAuth = FirebaseAuth.getInstance();
+                firebaseFirestore = FirebaseFirestore.getInstance();
             }
 
 
@@ -106,7 +134,7 @@ public class QrActivity extends AppCompatActivity {
             }
 
 
-            private void locationStart () {
+          /*  private void locationStart () {
                 LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 QrActivity.Localizacion Local = new QrActivity.Localizacion();
                 Local.setQrActivity(this);
@@ -187,7 +215,68 @@ public class QrActivity extends AppCompatActivity {
                 }
 
 
+            }*/
+
+    private void initScan(){
+        final BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(QrActivity.this)
+                .setBarcodeFormats(Barcode.ALL_FORMATS)
+                .build();
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+
+        cameraSource = new CameraSource.Builder(QrActivity.this, barcodeDetector)
+                .setRequestedPreviewSize(width, height)
+                .setAutoFocusEnabled(true)
+                .build();
+
+        cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+
+                if (ActivityCompat.checkSelfPermission(QrActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    try {
+                        cameraSource.start(cameraView.getHolder());
+                    } catch (IOException e) {
+                        Log.e("CAMERA SOURCE", e.getMessage());
+                    }
+                }
             }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+
+            }
+        });
+
+        barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
+            @Override
+            public void release() {
+
+            }
+
+            @Override
+            public void receiveDetections(Detector.Detections<Barcode> detections) {
+                final SparseArray<Barcode> code = detections.getDetectedItems();
+
+                if (code.size() > 0){
+                    String codeQr = code.valueAt(0).displayValue;
+                    Log.e("Code QR", codeQr);
+                }
+            }
+        });
+
+
+
+
+    }
 }
 
 
