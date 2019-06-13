@@ -46,20 +46,18 @@ import java.util.concurrent.TimeUnit;
 
 public class NFCActivity extends AppCompatActivity {
 
-    Button btnClockinNfc;
-    NfcAdapter nfcAdapter;
-    Boolean type;
-    Date date;
-    String comment;
-    ProgressDialog dialog;
+    private Button btnClockinNfc;
+    private NfcAdapter nfcAdapter;
+    private Boolean type;
+    private Date date;
+    private String comment;
+    private ProgressDialog dialog;
 
-    Tag tag;
-    Ndef ndef;
+    private Tag tag;
+    private Ndef ndef;
 
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth firebaseAuth;
-    
-    String clave = "M9Spr0aclI";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +66,8 @@ public class NFCActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         init();
+
+        //inicializo NFC
         initNFC();
     }
 
@@ -76,6 +76,9 @@ public class NFCActivity extends AppCompatActivity {
         btnClockinNfc.setEnabled(false);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
+
+        //Creo un alert dialog para advertir al usuario que hasta que no encuentre el nfc no
+        //se habilita el botón
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Debes detectar el NFC para poder habilitar el botón")
@@ -97,6 +100,8 @@ public class NFCActivity extends AppCompatActivity {
         });
     }
 
+    //Compruebo la asistencia anterior
+
     private void checkAssitance() {
         dialog = ProgressDialog.show(this, "",
                 "Cargando... espere por favor", true);
@@ -110,15 +115,19 @@ public class NFCActivity extends AppCompatActivity {
                     date = new Date(time.getSeconds() * 1000);
                     Date now = new Date();
                     if(date.getDate() == now.getDate() && date.getMonth() == now.getMonth() && date.getYear() == now.getYear()){
+                        //Si la asistencia anterior coincide con la misma fecha que hoy cambio el tipo de fichaje y lo realizo
                         type = !(Boolean) task.getResult().getDocuments().get(0).getData().get("type");
                         toggleButton();
                         dialog.dismiss();
                     }else{
+                        //Si la asistencia es de otro día, compruebo si es de entrada o salida
+
                         if((Boolean) task.getResult().getDocuments().get(0).getData().get("type")){
                             try {
                                 SimpleDateFormat formatter=new SimpleDateFormat("dd/MM/yyyy HH:mm");
                                 Date newDate = formatter.parse(new SimpleDateFormat("dd/MM/yyyy").format(date) + " " + Utils.HOUR_MAX);
 
+                                //Si es de entrada quiere decir que no se ha fichado para salir, por lo que genero una asistencia de salida con el horario máximo de salida
                                 Assistance assistance = new Assistance(new Timestamp(newDate), firebaseAuth.getCurrentUser().getEmail(), true, false, "");
                                 firebaseFirestore.collection("Assists").add(assistance).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                     @Override
@@ -134,12 +143,16 @@ public class NFCActivity extends AppCompatActivity {
                                 Log.i("PRUEBA", e.getMessage());
                             }
                         }else{
+
+                            //Si la asistencia anterior es de otro dia pero es de tipo salida quiere decir que fichó bien
+                            //Establezco el tipo de fichaje como entrada
                             type = true;
                             toggleButton();
                             dialog.dismiss();
                         }
                     }
                 }else{
+                    //Si no hay ninguna asistencia establezco el tipo como entrada
                     type = true;
                     toggleButton();
                     dialog.dismiss();
@@ -147,6 +160,8 @@ public class NFCActivity extends AppCompatActivity {
             }
         });
     }
+
+    //Compruebo si el usuario está activo o no para pulsar el botón
 
     private void checkUser(){
         dialog = ProgressDialog.show(this, "",
@@ -157,6 +172,8 @@ public class NFCActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if (task.getResult().getDocuments().size() > 0) {
+
+                        //Si el usuario está activo ficho
 
                         if((Boolean) task.getResult().getDocuments().get(0).getData().get("active")){
                             dialog.dismiss();
@@ -178,6 +195,8 @@ public class NFCActivity extends AppCompatActivity {
         });
     }
 
+    //Cambio el texto del botón en función de si es entrada o salida
+
     private void toggleButton(){
         if(type){
             btnClockinNfc.setText(getString(R.string.inBtn_text));
@@ -186,9 +205,14 @@ public class NFCActivity extends AppCompatActivity {
         }
     }
 
+    //Realizo el fichaje
+
     private void clockIn(){
 
+        //Si no han pasado más de 10 minutos entre entrada y salida saco un dialogo para comentar el por qué
+
         if(!type){
+            //Comparo la fecha de la salida con la fecha de ahora
             if(TimeUnit.MILLISECONDS.toMinutes(new Date().getTime() - date.getTime()) < Utils.MINUTES_MIN){
 
                 final AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
@@ -207,9 +231,10 @@ public class NFCActivity extends AppCompatActivity {
                             if(commentText.getText().toString().length() > 50){
                                 Toast.makeText(getApplication(), "No puedes superar el límite de 50 caracteres", Toast.LENGTH_LONG).show();
                             }else{
+                                //Recojo el comentario
                                 comment = commentText.getText().toString();
                                 alertDialog.dismiss();
-                                addAssist();
+                                addAssist(); //añado la asistencia a la bd
                             }
                         }else{
                             Toast.makeText(getApplication(), "No puedes dejar el campo vacío", Toast.LENGTH_LONG).show();
@@ -226,6 +251,8 @@ public class NFCActivity extends AppCompatActivity {
 
     }
 
+    //Añado la asistencia a la base de datos
+
     private void addAssist(){
         final ProgressDialog dialog = ProgressDialog.show(this, "",
                 "Cargando... espere por favor", true);
@@ -236,9 +263,9 @@ public class NFCActivity extends AppCompatActivity {
                 if (task.isSuccessful()){
                     dialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Has fichado", Toast.LENGTH_LONG).show();
-                    type = !type;
-                    toggleButton();
-                    btnClockinNfc.setEnabled(false);
+                    type = !type; //cambio el tipo (entrada/salida)
+                    toggleButton(); //cambio el botón
+                    btnClockinNfc.setEnabled(false); //desactivo el botón
                 }else {
                     dialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Error al fichar", Toast.LENGTH_LONG).show();
@@ -321,7 +348,7 @@ public class NFCActivity extends AppCompatActivity {
                 NdefMessage ndefMessage = ndef.getNdefMessage();
                 String message = new String(ndefMessage.getRecords()[0].getPayload());
 
-                if (message.equals(clave)){
+                if (message.equals(Utils.NFC_KEY)){
                     btnClockinNfc.setEnabled(true);
                 }
                 
