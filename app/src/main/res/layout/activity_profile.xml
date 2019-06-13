@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ProfileActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorSecondary"
+        app:titleTextColor="@color/colorAccent"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+  <ScrollView
+      android:layout_below="@id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:paddingHorizontal="@dimen/marginHorizontal"
+          android:layout_marginTop="@dimen/marginVertical">
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textColor="@color/colorAccent"
+              android:text="@string/name_text" />
+
+          <EditText
+              android:id="@+id/profile_name"
+              android:layout_marginVertical="@dimen/profile_EditText_marginVertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textColor="@color/colorText"/>
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textColor="@color/colorAccent"
+              android:text="@string/first_lastname_text" />
+
+          <EditText
+              android:id="@+id/profile_firstLastname"
+              android:layout_marginVertical="@dimen/profile_EditText_marginVertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textColor="@color/colorText"/>
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textColor="@color/colorAccent"
+              android:text="@string/secondLastname_text" />
+
+          <EditText
+              android:id="@+id/profile_secondLastname"
+              android:layout_marginVertical="@dimen/profile_EditText_marginVertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textColor="@color/colorText"/>
+
+          <Button
+              android:id="@+id/saveChanges_btn"
+              android:layout_marginTop="@dimen/paddingVertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/colorAccent"
+              android:textColor="@color/colorText"
+              android:text="@string/saveChanges_btn_text"/>
+
+          <Button
+              android:id="@+id/changePassword_btn"
+              android:layout_marginTop="@dimen/paddingVertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/colorAccent"
+              android:textColor="@color/colorText"
+              android:text="@string/change_password_btn"/>
+
+          <Button
+              android:id="@+id/logout_btn"
+              android:layout_marginTop="@dimen/paddingVertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/colorText"
+              android:textColor="@color/colorAccent"
+              android:text="@string/logout_btn"/>
+
+      </LinearLayout>
+  </ScrollView>
+</RelativeLayout>

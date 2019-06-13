@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -17,24 +18,27 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class SplashActivity extends AppCompatActivity {
 
     private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        firebaseAuth = FirebaseAuth.getInstance();
 
-        //Compruebo si hay datos del usuario logueado guardados en las shared preference
-        SharedPreferences prefs = getSharedPreferences("UserData", Context.MODE_PRIVATE);
-        String json = prefs.getString("user", "");
-        //Log.i("PRUEBA", json);
+        if(firebaseAuth.getCurrentUser() != null){
+            SharedPreferences prefs = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+            String json = prefs.getString("user", "");
 
-        if(! json.equals("")){
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-            startActivity(intent);
-        }else {
-            //Creo la instancia de firestore
+            if(!json.equals("")){
+                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                startActivity(intent);
+            }else{
+                Intent intent = new Intent(SplashActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        }else{
             firebaseFirestore = FirebaseFirestore.getInstance();
-
             getAllowedUsers();
         }
     }

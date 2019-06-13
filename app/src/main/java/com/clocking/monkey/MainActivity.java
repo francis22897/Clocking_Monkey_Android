@@ -1,6 +1,7 @@
 package com.clocking.monkey;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 
 import com.clocking.monkey.Fragments.AssistsFragment;
 import com.clocking.monkey.Fragments.ClockInFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("UserData", Context.MODE_PRIVATE);
         String json = prefs.getString("user", "");
-
         Log.i("PRUEBA", json);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if(id == R.id.profile){
+            startActivity(new Intent(MainActivity.this, ProfileActivity.class));
 
         }
 
