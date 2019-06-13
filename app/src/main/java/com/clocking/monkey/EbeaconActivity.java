@@ -14,7 +14,13 @@ import android.os.RemoteException;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -28,7 +34,7 @@ import org.altbeacon.beacon.Region;
 
 import java.util.Collection;
 
-public class EbeaconActivity extends Activity implements BeaconConsumer, RangeNotifier {
+public class EbeaconActivity extends AppCompatActivity implements BeaconConsumer, RangeNotifier {
 
     // Para interactuar con los beacons desde una actividad
     private BeaconManager mBeaconManager;
@@ -40,15 +46,39 @@ public class EbeaconActivity extends Activity implements BeaconConsumer, RangeNo
 
     Button btnClockIn;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ebeacon);
+        btnClockIn = findViewById(R.id.clockin_btn);
+        Toolbar toolbar = findViewById(R.id.toolbar_nfc);
+        setSupportActionBar(toolbar);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_fragments, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.back){
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
+
+        return true;
+    }
+
     //Cada vez que entramos en la actividad
 
     @Override
     protected void onResume() {
         super.onResume();
-        setContentView(R.layout.activity_ebeacon); // NUEVO
-
-        btnClockIn = findViewById(R.id.clockin_btn); //NUEVO
-
         //botón de fichar
         btnClockIn.setEnabled(false);
 
@@ -308,14 +338,4 @@ public class EbeaconActivity extends Activity implements BeaconConsumer, RangeNo
             mBluetoothAdapter.disable();
         }
     }
-
-    /*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        //btnClockIn = findViewById(R.id.clockin_btn);
-
-    }
-    */
 }

@@ -36,10 +36,8 @@
     <string name="location_not_granted">Ya que el permiso de localización no ha sido concedido,</string>
     <string name="location_disabled">Localización en modo alta precisión no activado</string>
     <string name="location_settings">Abrir ajustes de localización</string>
-
-
-
-
+    <string name="clockIn_btn_text">Fichar</string>
+    <string name="qr_button_back">Atrás</string>
 
 
 </resources>

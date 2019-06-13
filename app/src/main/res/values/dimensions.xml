@@ -13,4 +13,5 @@
     <dimen name="separationVerticalButtons">20dp</dimen>
     <dimen name="separateHorizontalItems">20dp</dimen>
     <dimen name="fragmentTitleSize">20dp</dimen>
+    <dimen name="btnClockIn_marginTop">90dp</dimen>
 </resources>
