@@ -51,7 +51,7 @@ public class EbeaconActivity extends AppCompatActivity implements BeaconConsumer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ebeacon);
         btnClockIn = findViewById(R.id.clockin_btn);
-        Toolbar toolbar = findViewById(R.id.toolbar_nfc);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
