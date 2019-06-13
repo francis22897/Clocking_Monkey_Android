@@ -5,5 +5,5 @@
         android:id="@+id/back"
         android:title="@string/qr_button_back"
         app:showAsAction="always"
-        android:icon="@drawable/ic_arrow_back"/>
+        android:icon="@drawable/ic_arrow_back_black_24dp"/>
 </menu>
