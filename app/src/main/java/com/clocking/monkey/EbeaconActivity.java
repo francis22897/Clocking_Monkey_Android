@@ -203,7 +203,7 @@ public class EbeaconActivity extends AppCompatActivity implements BeaconConsumer
 
         }else{
             //Si no lo encuentra sigue buscando (AQUÍ PODEMOS HACER QUE CUANDO PASEN X SEGUNDOS PARE LA BÚSQUEDA)
-            Toast.makeText(this, "No Encontrado", Toast.LENGTH_LONG).show();
+           // Toast.makeText(this, "No Encontrado", Toast.LENGTH_LONG).show();
         }
     }
 
