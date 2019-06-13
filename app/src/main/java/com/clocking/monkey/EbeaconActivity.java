@@ -53,6 +53,7 @@ public class EbeaconActivity extends AppCompatActivity implements BeaconConsumer
         btnClockIn = findViewById(R.id.clockin_btn);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     }
 
 
@@ -120,8 +121,6 @@ public class EbeaconActivity extends AppCompatActivity implements BeaconConsumer
             askToTurnOnLocation();
 
         } else { // Localización activada, comprobemos el bluetooth
-
-            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
             if (mBluetoothAdapter == null) {
 
