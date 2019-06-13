@@ -14,7 +14,7 @@ public class User {
         this.name = name;
         this.first_lastname = first_lastname;
         this.second_lastname = second_lastname;
-        this.active = false;
+        this.active = true;
     }
 
     public String getEmail() {
