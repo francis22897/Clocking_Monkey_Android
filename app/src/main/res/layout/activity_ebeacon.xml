@@ -31,13 +31,12 @@
             android:src="@drawable/beacon_logo"/>
 
         <Button
-            android:id="@+id/clockin_btn"
+            android:id="@+id/EbeaconActivity_btn_clockin"
             android:layout_marginTop="@dimen/btnClockIn_marginTop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/marginHorizontalButton"
             android:background="@color/colorAccent"
-            android:textColor="@color/colorText"
             android:text="@string/clockIn_btn_text"
             android:layout_alignParentBottom="true" />
 

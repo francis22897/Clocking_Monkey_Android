@@ -1,7 +1,6 @@
 package com.clocking.monkey;
 
 import android.Manifest;
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -44,16 +44,56 @@ public class EbeaconActivity extends AppCompatActivity implements BeaconConsumer
 
     BluetoothAdapter mBluetoothAdapter;
 
-    Button btnClockIn;
+    Button btnClockInEbeacon;
+
+    AssistsBDUtils assistsBDUtils;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ebeacon);
-        btnClockIn = findViewById(R.id.clockin_btn);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+       // btnClockInEbeacon = findViewById(R.id.EbeaconActivity_btn_clockin);
+       // btnClockInEbeacon.setEnabled(false);
+
+        init();
+
+    }
+
+    private void init(){
+
+        btnClockInEbeacon = findViewById(R.id.EbeaconActivity_btn_clockin);
+        btnClockInEbeacon.setEnabled(false);
+
+        assistsBDUtils = new AssistsBDUtils(this, this.getLayoutInflater().inflate(R.layout.activity_ebeacon, null), btnClockInEbeacon);
+
+
+        //Creo un alert dialog para advertir al usuario que hasta que no encuentre el nfc no
+        //se habilita el botón
+
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setMessage("Una vez se detecte el Beacon, se habilitará el botón")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+        // Create the AlertDialog object and return it
+        builder.create();
+        builder.show();
+
+        btnClockInEbeacon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assistsBDUtils.checkUser();
+            }
+        });
     }
 
 
@@ -80,8 +120,12 @@ public class EbeaconActivity extends AppCompatActivity implements BeaconConsumer
     @Override
     protected void onResume() {
         super.onResume();
+
+        assistsBDUtils.resetComment();
+        assistsBDUtils.checkAssitance();
+
         //botón de fichar
-        btnClockIn.setEnabled(false);
+        //btnClockInEbeacon.setEnabled(false);
 
         //instancio el manejador de beacons
         mBeaconManager = BeaconManager.getInstanceForApplication(this);
@@ -194,7 +238,7 @@ public class EbeaconActivity extends AppCompatActivity implements BeaconConsumer
             this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    btnClockIn.setEnabled(true);
+                    btnClockInEbeacon.setEnabled(true);
 
                 }
             });
@@ -321,6 +365,10 @@ public class EbeaconActivity extends AppCompatActivity implements BeaconConsumer
     @Override
     public void onPause() {
         super.onPause();
+
+        //botón de fichar
+        btnClockInEbeacon.setEnabled(false);
+
         mBeaconManager.unbind(this);
         if(mBluetoothAdapter.isEnabled()){
             mBluetoothAdapter.disable();
