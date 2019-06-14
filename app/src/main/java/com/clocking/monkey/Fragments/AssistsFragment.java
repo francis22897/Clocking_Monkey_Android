@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.clocking.monkey.Assistance;
 import com.clocking.monkey.Assists;
@@ -74,12 +75,15 @@ public class AssistsFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
-                    assists.getAssists().clear();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        assists.addAssistance(new Assistance((Timestamp) document.getData().get("date"), document.getData().get("email").toString(), (Boolean) document.getData().get("fail"), (Boolean) document.getData().get("type"), document.getData().get("comment").toString()));
+                    if (task.getResult().getDocuments().size() > 0) {
+                        assists.getAssists().clear();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            assists.addAssistance(new Assistance((Timestamp) document.getData().get("date"), document.getData().get("email").toString(), (Boolean) document.getData().get("fail"), (Boolean) document.getData().get("type"), document.getData().get("comment").toString()));
+                        }
+                        adapter.notifyDataSetChanged();
+                    }else{
+                        Toast.makeText(getContext(), "No hay ninguna asistencia registrada", Toast.LENGTH_LONG).show();
                     }
-
-                    adapter.notifyDataSetChanged();
                     dialog.dismiss();
                 }
             }
