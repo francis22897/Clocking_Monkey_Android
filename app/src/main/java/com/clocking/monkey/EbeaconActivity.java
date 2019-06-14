@@ -53,6 +53,7 @@ public class EbeaconActivity extends AppCompatActivity implements BeaconConsumer
         btnClockIn = findViewById(R.id.clockin_btn);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     }
 
 
@@ -120,8 +121,6 @@ public class EbeaconActivity extends AppCompatActivity implements BeaconConsumer
             askToTurnOnLocation();
 
         } else { // Localización activada, comprobemos el bluetooth
-
-            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
             if (mBluetoothAdapter == null) {
 
@@ -204,7 +203,7 @@ public class EbeaconActivity extends AppCompatActivity implements BeaconConsumer
 
         }else{
             //Si no lo encuentra sigue buscando (AQUÍ PODEMOS HACER QUE CUANDO PASEN X SEGUNDOS PARE LA BÚSQUEDA)
-            Toast.makeText(this, "No Encontrado", Toast.LENGTH_LONG).show();
+           // Toast.makeText(this, "No Encontrado", Toast.LENGTH_LONG).show();
         }
     }
 

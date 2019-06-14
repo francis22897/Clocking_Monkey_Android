@@ -1,5 +1,6 @@
 package com.clocking.monkey;
 
+import android.content.Intent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +42,7 @@ public class SplashActivity extends AppCompatActivity {
             firebaseFirestore = FirebaseFirestore.getInstance();
             getAllowedUsers();
         }
+
     }
 
     private void getAllowedUsers(){

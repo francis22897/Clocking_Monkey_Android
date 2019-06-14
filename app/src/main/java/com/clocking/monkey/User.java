@@ -3,16 +3,18 @@ package com.clocking.monkey;
 import com.google.gson.Gson;
 
 public class User {
-    private String email;
-    private String name;
-    private String first_lastname;
-    private String second_lastname;
+    String email;
+    String name;
+    String first_lastname;
+    String second_lastname;
+    Boolean active;
 
     public User(String email, String name, String first_lastname, String second_lastname) {
         this.email = email;
         this.name = name;
         this.first_lastname = first_lastname;
         this.second_lastname = second_lastname;
+        this.active = true;
     }
 
     public String getEmail() {
@@ -45,6 +47,14 @@ public class User {
 
     public void setSecond_lastname(String second_lastname) {
         this.second_lastname = second_lastname;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public String toJson(){

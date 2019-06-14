@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:paddingHorizontal="@dimen/marginHorizontal"
+    android:paddingVertical="@dimen/paddingVertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/comment_title"
+        android:textColor="@color/colorAccent"/>
+    <EditText
+        android:id="@+id/comment_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text|textMultiLine"
+        android:hint="@string/comment_et_hint"
+        android:textColor="@color/colorText"
+        android:layout_marginTop="@dimen/paddingVerticalRegisterFieldsContent"/>
+
+    <Button
+        android:id="@+id/saveComment_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/comment_btn_text"
+        android:background="@color/colorAccent"
+        android:textColor="@color/colorText"
+        android:layout_marginTop="@dimen/marginTopButtonContent"/>
+
+
+</LinearLayout>

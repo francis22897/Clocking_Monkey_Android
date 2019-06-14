@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.clocking.monkey.NFCActivity;
 import com.clocking.monkey.EbeaconActivity;
 import com.clocking.monkey.QrActivity;
 import com.clocking.monkey.R;
@@ -18,6 +19,7 @@ import com.clocking.monkey.R;
  */
 public class ClockInFragment extends Fragment {
 
+    Button btn_nfc;
 
     public ClockInFragment() {
         // Required empty public constructor
@@ -25,14 +27,21 @@ public class ClockInFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_clock_in, container,false);
 
-        Button btn1 = (Button) root.findViewById(R.id.btn_option_ebeacon);
+        Button btn_nfc = (Button) root.findViewById(R.id.btn_option_NFC);
+        Button btn_beacon = (Button) root.findViewById(R.id.btn_option_ebeacon);
+
+        btn_nfc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), NFCActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Button btn2 = (Button) root.findViewById(R.id.btn_option_QR);
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +50,8 @@ public class ClockInFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        btn1.setOnClickListener(new View.OnClickListener() {
+
+        btn_beacon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), EbeaconActivity.class);
@@ -50,10 +60,6 @@ public class ClockInFragment extends Fragment {
         });
         return root;
 
-        /*
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_clock_in, container, false);
-        */
     }
 
 }
