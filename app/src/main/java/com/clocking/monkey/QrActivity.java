@@ -50,8 +50,6 @@ public class QrActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,27 +82,20 @@ public class QrActivity extends AppCompatActivity {
         }*/
 
         /*//location
-        float metros = 10;
+        float metros = 3;
         float[] distance = new float[1];
         Location.distanceBetween(38.094259, -3.631208, location.getLatitude(), location.getLongitude(), distance);
 
         if (distance[0] / metros < 1) {
 
-
-
-
         } else {
-
-
 
         }
 */
 
-
         buttonScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
 
                 //firestore
@@ -113,7 +104,6 @@ public class QrActivity extends AppCompatActivity {
             }
         });
     }
-
             private void initUI () {
                 buttonScan = findViewById(R.id.button_scan_qr);
                 cameraView = findViewById(R.id.camera_view);
@@ -121,7 +111,6 @@ public class QrActivity extends AppCompatActivity {
                 firebaseAuth = FirebaseAuth.getInstance();
                 firebaseFirestore = FirebaseFirestore.getInstance();
             }
-
 
             private void initPermissions() {
                 if (ActivityCompat.checkSelfPermission(QrActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -132,7 +121,6 @@ public class QrActivity extends AppCompatActivity {
                     return;
                 }
             }
-
 
           /*  private void locationStart () {
                 LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -213,7 +201,6 @@ public class QrActivity extends AppCompatActivity {
                     }
 
                 }
-
 
             }*/
 

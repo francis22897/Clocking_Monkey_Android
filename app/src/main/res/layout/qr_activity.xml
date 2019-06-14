@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="20dp"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
     tools:context=".QrActivity">
@@ -24,8 +23,8 @@
         android:layout_marginTop="80dp"
         android:layout_marginBottom="30dp"
         android:id="@+id/camera_view"
-        android:layout_width="330dp"
-        android:layout_height="330dp"
+        android:layout_width="275dp"
+        android:layout_height="275dp"
         android:layout_gravity="center" />
 
 
@@ -36,5 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/scan_qr"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/marginHorizontalButton"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="90dp"/>
 </LinearLayout>

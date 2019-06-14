@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.clocking.monkey.EbeaconActivity;
+import com.clocking.monkey.QrActivity;
 import com.clocking.monkey.R;
 
 /**
@@ -32,6 +33,14 @@ public class ClockInFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_clock_in, container,false);
 
         Button btn1 = (Button) root.findViewById(R.id.btn_option_ebeacon);
+        Button btn2 = (Button) root.findViewById(R.id.btn_option_QR);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), QrActivity.class);
+                startActivity(intent);
+            }
+        });
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
