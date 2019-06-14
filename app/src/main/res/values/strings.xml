@@ -46,5 +46,6 @@
     <string name="location_disabled">Localización en modo alta precisión no activado</string>
     <string name="location_settings">Abrir ajustes de localización</string>
     <string name="clockIn_btn_text">Fichar</string>
+    <string name="showComment_title_text">Comentario</string>
 
 </resources>

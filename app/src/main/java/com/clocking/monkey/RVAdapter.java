@@ -1,6 +1,8 @@
 package com.clocking.monkey;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -21,11 +24,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssistanceViewHold
     public class AssistanceViewHolder extends RecyclerView.ViewHolder {
         TextView dateText;
         TextView typeText;
+        ImageView showCommentBtn;
 
         AssistanceViewHolder(View itemView){
             super(itemView);
             dateText = itemView.findViewById(R.id.assistance_date_text);
             typeText = itemView.findViewById(R.id.assistance_type_text);
+            showCommentBtn = itemView.findViewById(R.id.showComment_btn);
         }
     }
 
@@ -47,7 +52,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssistanceViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AssistanceViewHolder assistanceViewHolder, int i) {
+    public void onBindViewHolder(@NonNull AssistanceViewHolder assistanceViewHolder, final int i) {
 
         if(assists.get(i).getFail()){
             assistanceViewHolder.dateText.setTextColor(ContextCompat.getColor(context, R.color.colorAssistanceFail));
@@ -61,6 +66,27 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssistanceViewHold
             assistanceViewHolder.typeText.setText(R.string.inBtn_text);
         }else{
             assistanceViewHolder.typeText.setText(R.string.outBtn_text);
+        }
+
+        if(! assists.get(i).getComment().equals("")){
+            assistanceViewHolder.showCommentBtn.setImageResource(R.drawable.ic_show_comment);
+            assistanceViewHolder.showCommentBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Comentario")
+                            .setMessage(assists.get(i).getComment())
+                            .setPositiveButton("Cerrar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                    builder.create();
+                    builder.show();
+
+                }
+            });
         }
     }
 
