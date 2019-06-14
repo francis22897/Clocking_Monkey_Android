@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("UserData", Context.MODE_PRIVATE);
         String json = prefs.getString("user", "");
-        Log.i("PRUEBA", json);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
