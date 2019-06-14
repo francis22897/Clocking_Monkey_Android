@@ -3,6 +3,7 @@ package com.clocking.monkey;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -15,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -24,6 +26,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -39,8 +42,8 @@ import java.util.Locale;
 public class QrActivity extends AppCompatActivity {
 
 
-
-    private Button buttonScan;
+    boolean comprobar;
+    private Button  btnClockinQr;
     private final int PERMISSIONS_REQUEST_CAMERA = 1;
 
     private CameraSource cameraSource;
@@ -50,79 +53,89 @@ public class QrActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
 
 
+    AssistsBDUtils assistsBDUtils;
+
+    Location mLocation;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_activity);
 
+        Toolbar toolbar =findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
         initPermissions();
         initUI();
         initScan();
 
-/*
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
         } else {
             locationStart();
+
         }
     }
     public void setLocation ( final Location location){
-
-        if (location.getLatitude() != 0.0 && location.getLongitude() != 0.0) {
-            try {
-                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-                List<Address> list = geocoder.getFromLocation(
-                        location.getLatitude(), location.getLongitude(), 1);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/
-
-        /*//location
         float metros = 3;
         float[] distance = new float[1];
         Location.distanceBetween(38.094259, -3.631208, location.getLatitude(), location.getLongitude(), distance);
-
-        if (distance[0] / metros < 1) {
-
+        if (distance[0] / metros < 20) {
+            comprobar =true;
+            Log.e("LOCATECHECK", String.valueOf(comprobar));
         } else {
 
+            comprobar=false;
         }
-*/
+    }
 
-        buttonScan.setOnClickListener(new View.OnClickListener() {
+
+
+    private void initUI () {
+        btnClockinQr = findViewById(R.id.button_scan_qr);
+        btnClockinQr.setEnabled(false);
+        cameraView = findViewById(R.id.camera_view);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        assistsBDUtils = new AssistsBDUtils(this, this.getLayoutInflater().inflate(R.layout.qr_activity,null),btnClockinQr);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Debes escanear el QR para poder habilitar el botón")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+        builder.create();
+        builder.show();
+
+        btnClockinQr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                //firestore
-               // Assists assists = new Assists;
-
+                assistsBDUtils.checkUser();
             }
         });
     }
-            private void initUI () {
-                buttonScan = findViewById(R.id.button_scan_qr);
-                cameraView = findViewById(R.id.camera_view);
 
-                firebaseAuth = FirebaseAuth.getInstance();
-                firebaseFirestore = FirebaseFirestore.getInstance();
+    private void initPermissions() {
+        if (ActivityCompat.checkSelfPermission(QrActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) ;
+                requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSIONS_REQUEST_CAMERA);
             }
+            return;
+        }
+    }
 
-            private void initPermissions() {
-                if (ActivityCompat.checkSelfPermission(QrActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) ;
-                        requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSIONS_REQUEST_CAMERA);
-                    }
-                    return;
-                }
-            }
-
-          /*  private void locationStart () {
+           private void locationStart () {
                 LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 QrActivity.Localizacion Local = new QrActivity.Localizacion();
                 Local.setQrActivity(this);
@@ -167,9 +180,12 @@ public class QrActivity extends AppCompatActivity {
 
                 @Override
                 public void onLocationChanged(Location location) {
-
                     location.getLatitude();
                     location.getLongitude();
+                    mLocation = location;
+
+                    Log.e("debug_location", String.valueOf(location.getLatitude()));
+                    Log.e("debug_location",  String.valueOf(location.getLongitude()));
 
                 }
 
@@ -202,7 +218,7 @@ public class QrActivity extends AppCompatActivity {
 
                 }
 
-            }*/
+            }
 
     private void initScan(){
         final BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(QrActivity.this)
@@ -255,7 +271,11 @@ public class QrActivity extends AppCompatActivity {
 
                 if (code.size() > 0){
                     String codeQr = code.valueAt(0).displayValue;
-                    Log.e("Code QR", codeQr);
+                    if(codeQr == Utils.QR_PASSWORD){
+                        setLocation(mLocation);
+                    }
+
+                    Log.e("CodeQR", codeQr);
                 }
             }
         });
