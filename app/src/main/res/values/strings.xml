@@ -47,5 +47,7 @@
     <string name="location_settings">Abrir ajustes de localización</string>
     <string name="clockIn_btn_text">Fichar</string>
     <string name="showComment_title_text">Comentario</string>
+    <string name="recyclerView_date_title">FECHA</string>
+    <string name="recyclerView_type_title">TIPO</string>
 
 </resources>

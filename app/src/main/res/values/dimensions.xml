@@ -15,4 +15,9 @@
     <dimen name="fragmentTitleSize">20dp</dimen>
     <dimen name="profile_EditText_marginVertical">10dp</dimen>
     <dimen name="btnClockIn_marginTop">90dp</dimen>
+    <dimen name="recyclerViewMarginTop">10dp</dimen>
+    <dimen name="RecyclerViewTitlePadding">5dp</dimen>
+    <dimen name="RecyclerViewItemPaddingTop">5dp</dimen>
+    <dimen name="RecyclerViewTypeTitlePaddindRight">34dp</dimen>
+    <dimen name="showCommentIconSize">24dp</dimen>
 </resources>
