@@ -4,7 +4,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="10dp">
+    android:paddingVertical="@dimen/RecyclerViewItemPaddingTop">
 
     <TextView
         android:id="@+id/assistance_date_text"
@@ -27,7 +27,7 @@
 
     <ImageView
         android:id="@+id/showComment_btn"
-        android:layout_width="24dp"
-        android:layout_height="24dp" />
+        android:layout_width="@dimen/showCommentIconSize"
+        android:layout_height="@dimen/showCommentIconSize" />
 
 </LinearLayout>

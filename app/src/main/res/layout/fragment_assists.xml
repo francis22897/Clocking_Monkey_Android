@@ -6,14 +6,40 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Fragments.AssistsFragment"
-        android:elevation="@dimen/elevation"
         android:background="@color/colorPrimary"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/recyclerViewMarginTop"
+        android:paddingHorizontal="@dimen/paddingHorizontalTextInput">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/colorAccent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/recyclerView_date_title"
+                android:textAlignment="center"
+                android:textColor="@color/colorText"
+                android:padding="@dimen/RecyclerViewTitlePadding"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/recyclerView_type_title"
+                android:textAlignment="center"
+                android:textColor="@color/colorText"
+                android:paddingRight="@dimen/RecyclerViewTypeTitlePaddindRight"/>
+
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingVertical="@dimen/paddingVertical"
-            android:paddingHorizontal="@dimen/paddingHorizontalTextInput"/>
+            android:layout_marginTop="@dimen/recyclerViewMarginTop"/>
     </LinearLayout>
