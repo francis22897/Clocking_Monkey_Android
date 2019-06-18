@@ -3,243 +3,140 @@ package com.clocking.monkey;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Build;
-import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
 
+import com.clocking.monkey.Utils;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
-public class QrActivity extends AppCompatActivity {
-
-
-    boolean comprobar;
-    private Button  btnClockinQr;
-    private final int PERMISSIONS_REQUEST_CAMERA = 1;
+public class QrActivity extends AppCompatActivity implements LocationListener {
 
     private CameraSource cameraSource;
     private SurfaceView cameraView;
+    LocationManager locationManager;
 
-    private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firebaseFirestore;
-
-
-    AssistsBDUtils assistsBDUtils;
-
-    Location mLocation;
-
+    double latitude, longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_activity);
-
-        Toolbar toolbar =findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        initPermissions();
         initUI();
         initScan();
+        CheckPermission();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getLocation();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        locationManager.removeUpdates(this);
+    }
+
+    public void getLocation() {
+        try {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 5, this);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void CheckPermission() {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+    }
 
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-        } else {
-            locationStart();
+    @Override
+    public void onProviderDisabled(String provider) {
+        Toast.makeText(this, "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Toast.makeText(this, "Enabled new provider!" + provider,
+                Toast.LENGTH_SHORT).show();
+    }
+
+    private void setLocation(){
+        if(longitude != 0.0 && latitude != 0.0){
+            Log.i("PRUEBA", latitude + ", " + longitude);
+            float[] dist = new float[1];
+            try{
+                Location.distanceBetween(38.094259,-3.631208,latitude,longitude,dist);
+            }catch (Exception ex){
+                Log.i("PRUEBA", ex.getMessage());
+            }
+            Log.i("PRUEBA", String.valueOf(dist));
 
         }
     }
-    public void setLocation ( final Location location){
-        float metros = 3;
-        float[] distance = new float[1];
-        Location.distanceBetween(38.094259, -3.631208, location.getLatitude(), location.getLongitude(), distance);
-        if (distance[0] / metros < 20) {
-            comprobar =true;
-            Log.e("LOCATECHECK", String.valueOf(comprobar));
-        } else {
 
-            comprobar=false;
-        }
-    }
-
-
-
-    private void initUI () {
-        btnClockinQr = findViewById(R.id.button_scan_qr);
-        btnClockinQr.setEnabled(false);
+    private void initUI(){
         cameraView = findViewById(R.id.camera_view);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
-
-        assistsBDUtils = new AssistsBDUtils(this, this.getLayoutInflater().inflate(R.layout.qr_activity,null),btnClockinQr);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Debes escanear el QR para poder habilitar el botón")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-
-
-        builder.create();
-        builder.show();
-
-        btnClockinQr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                assistsBDUtils.checkUser();
-            }
-        });
     }
-
-    private void initPermissions() {
-        if (ActivityCompat.checkSelfPermission(QrActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) ;
-                requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSIONS_REQUEST_CAMERA);
-            }
-            return;
-        }
-    }
-
-           private void locationStart () {
-                LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                QrActivity.Localizacion Local = new QrActivity.Localizacion();
-                Local.setQrActivity(this);
-
-
-                final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                if (!gpsEnabled) {
-                    Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(settingsIntent);
-                }
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-                    return;
-                }
-
-                mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, (LocationListener) Local);
-                mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) Local);
-
-            }
-
-            public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-                if (requestCode == 1000) {
-                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        locationStart();
-                        return;
-                    }
-                }
-            }
-
-            public class Localizacion implements LocationListener {
-                QrActivity qrActivity;
-
-                public QrActivity getMainActivity() {
-                    return qrActivity;
-                }
-
-                public void setQrActivity(QrActivity gps) {
-                    this.qrActivity = gps;
-                }
-
-                @Override
-                public void onLocationChanged(Location location) {
-                    location.getLatitude();
-                    location.getLongitude();
-                    mLocation = location;
-
-                    Log.e("debug_location", String.valueOf(location.getLatitude()));
-                    Log.e("debug_location",  String.valueOf(location.getLongitude()));
-
-                }
-
-                @Override
-                public void onProviderEnabled(String provider) {
-                    Log.e("mensaje", "GPS activado");
-
-                }
-
-                @Override
-                public void onProviderDisabled(String provider) {
-                    Log.e("mensaje", "GPS desactivado");
-
-                }
-
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                    switch (status) {
-                        case LocationProvider.AVAILABLE:
-                            Log.d("debug", "LocationProvider.AVAILABLE");
-                            break;
-                        case LocationProvider.OUT_OF_SERVICE:
-                            Log.d("debug", "LocationProvider.OUT_OF_SERVICE");
-                            break;
-                        case LocationProvider.TEMPORARILY_UNAVAILABLE:
-                            Log.d("debug", "LocationProvider.TEMPORARILY_UNAVAILABLE");
-                            break;
-                    }
-
-                }
-
-            }
 
     private void initScan(){
-        final BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(QrActivity.this)
-                .setBarcodeFormats(Barcode.ALL_FORMATS)
+        final BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(this)
+                .setBarcodeFormats(Barcode.QR_CODE)
                 .build();
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
 
-        cameraSource = new CameraSource.Builder(QrActivity.this, barcodeDetector)
-                .setRequestedPreviewSize(width, height)
-                .setAutoFocusEnabled(true)
+        cameraSource = new CameraSource
+                .Builder(this, barcodeDetector)
                 .build();
 
         cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
 
-                if (ActivityCompat.checkSelfPermission(QrActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     try {
                         cameraSource.start(cameraView.getHolder());
                     } catch (IOException e) {
@@ -271,25 +168,34 @@ public class QrActivity extends AppCompatActivity {
 
                 if (code.size() > 0){
                     String codeQr = code.valueAt(0).displayValue;
-                    if(codeQr == Utils.QR_PASSWORD){
-                        setLocation(mLocation);
+                    if(codeQr.equals(Utils.QR_PASSWORD)){
+                        //Log.i("PRUEBA", "OK");
+                        setLocation();
                     }
 
-                    Log.e("CodeQR", codeQr);
                 }
             }
         });
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_fragments, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
+        if(id == R.id.back){
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
 
+        return true;
     }
 }
-
-
-
-
-
 
 
 
