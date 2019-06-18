@@ -3,6 +3,7 @@ package com.clocking.monkey;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -11,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +24,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +41,10 @@ public class QrActivity extends AppCompatActivity implements LocationListener {
 
     private CameraSource cameraSource;
     private SurfaceView cameraView;
+    private Button btnClockInQR;
     LocationManager locationManager;
+
+    AssistsBDUtils assistsBDUtils;
 
     double latitude, longitude;
 
@@ -56,12 +63,19 @@ public class QrActivity extends AppCompatActivity implements LocationListener {
     @Override
     protected void onResume() {
         super.onResume();
+
+        assistsBDUtils.resetComment();
+        assistsBDUtils.checkAssitance();
+
         getLocation();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+
+        btnClockInQR.setEnabled(false);
+
         locationManager.removeUpdates(this);
     }
 
@@ -105,21 +119,43 @@ public class QrActivity extends AppCompatActivity implements LocationListener {
     }
 
     private void setLocation(){
-        if(longitude != 0.0 && latitude != 0.0){
-            Log.i("PRUEBA", latitude + ", " + longitude);
-            float[] dist = new float[1];
-            try{
-                Location.distanceBetween(38.094259,-3.631208,latitude,longitude,dist);
-            }catch (Exception ex){
-                Log.i("PRUEBA", ex.getMessage());
+        if(longitude != 0.0 && latitude != 0.0) {
+            float metros = 10;
+            float[] distance = new float[1];
+            Location.distanceBetween(38.094259, -3.631208, latitude, longitude, distance);
+            if (distance[0] / metros < 1) {
+                btnClockInQR.setEnabled(true);
+                if (!btnClockInQR.isEnabled()){
+                    btnClockInQR.setEnabled(true);
+                }
             }
-            Log.i("PRUEBA", String.valueOf(dist));
-
         }
     }
 
     private void initUI(){
         cameraView = findViewById(R.id.camera_view);
+        btnClockInQR = findViewById(R.id.button_scan_qr);
+        btnClockInQR.setEnabled(false);
+        assistsBDUtils = new AssistsBDUtils(this, this.getLayoutInflater().inflate(R.layout.qr_activity, null), btnClockInQR);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Debes detectar el NFC para poder habilitar el botón")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+        // Create the AlertDialog object and return it
+        builder.create();
+        builder.show();
+
+        btnClockInQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assistsBDUtils.checkUser();
+            }
+        });
     }
 
     private void initScan(){
