@@ -1,14 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    tools:context=".QrActivity">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorSecondary"
+        app:titleTextColor="@color/colorAccent"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <SurfaceView
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/camera_view"
+        android:layout_width="@dimen/cameraSize"
+        android:layout_height="@dimen/cameraSize"
+        android:layout_gravity="center" />
+
 
     <Button
+        android:background="@color/colorAccent"
+        android:textColor="@color/colorText"
         android:id="@+id/button_scan_qr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/scan_qr"
-        android:layout_gravity="center_vertical"/>
-</FrameLayout>
+        android:text="@string/clockIn_btn_text"
+        android:layout_gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/marginHorizontalButton"
+        android:layout_marginTop="@dimen/btnClockIn_marginTop"
+        android:layout_marginBottom="90dp"/>
+</LinearLayout>

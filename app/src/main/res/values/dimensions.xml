@@ -20,4 +20,5 @@
     <dimen name="RecyclerViewItemPaddingTop">5dp</dimen>
     <dimen name="RecyclerViewTypeTitlePaddindRight">34dp</dimen>
     <dimen name="showCommentIconSize">24dp</dimen>
+    <dimen name="cameraSize">200dp</dimen>
 </resources>

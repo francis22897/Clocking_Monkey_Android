@@ -15,12 +15,12 @@
     <string name="QR_option_button_text">QR</string>
     <string name="NFC_option_button_text">NFC</string>
     <string name="ebeacon_option_button_text">Ebeacon</string>
-    <string name="qr_button_back">Atrás</string>
-    <string name="qr_button_clockin">Fichar</string>
-    <string name="clockin_option_text">ClockIn</string>
-    <string name="register_option_text">Register</string>
     <string name="qr_name">Scan_QR</string>
     <string name="scan_qr">Scan QR</string>
+    <string name="clockin_option_text">ClockIn</string>
+    <string name="register_option_text">Register</string>
+    <string name="qr_button_back">Atrás</string>
+    <string name="qr_button_clockin">Fichar</string>
     <string name="secondLastname_text">Segundo Apellido</string>
     <string name="name_text">Nombre</string>
     <string name="first_lastname_text">Primer Apellido</string>

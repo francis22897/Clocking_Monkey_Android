@@ -24,4 +24,7 @@ public class Utils {
     static protected final String NAMESPACE_ID = "0x00000000000000000000";
     static protected final String INSTANCE_ID = "0x000000000000";
 
+    //CONTRASEÑA QR
+    static  protected final String QR_PASSWORD = "sjt8HD64UD50Y0Y6dU7r";
+
 }
