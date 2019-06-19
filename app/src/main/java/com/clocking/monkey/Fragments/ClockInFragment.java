@@ -1,14 +1,22 @@
 package com.clocking.monkey.Fragments;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.clocking.monkey.MainActivity;
 import com.clocking.monkey.NFCActivity;
 import com.clocking.monkey.EbeaconActivity;
 import com.clocking.monkey.QrActivity;
@@ -46,8 +54,14 @@ public class ClockInFragment extends Fragment {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), QrActivity.class);
-                startActivity(intent);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if(CheckingPermissionIsEnabledOrNot()){
+                        Intent intent = new Intent(getActivity(), QrActivity.class);
+                        startActivity(intent);
+                    }else{
+                        RequestMultiplePermission();
+                    }
+                }
             }
         });
 
@@ -60,6 +74,40 @@ public class ClockInFragment extends Fragment {
         });
         return root;
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case 1:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if(CheckingPermissionIsEnabledOrNot()){
+                        Intent intent = new Intent(getActivity(), QrActivity.class);
+                        startActivity(intent);
+                    }
+                }
+                break;
+        }
+    }
+
+    private void RequestMultiplePermission() {
+
+        // Creating String Array with Permissions.
+        requestPermissions(new String[]
+                {
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                }, 1);
+
+    }
+
+    public boolean CheckingPermissionIsEnabledOrNot() {
+
+        int FirstPermissionResult = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA);
+        int SecondPermissionResult = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+
+        return FirstPermissionResult == PackageManager.PERMISSION_GRANTED &&
+                SecondPermissionResult == PackageManager.PERMISSION_GRANTED;
     }
 
 }

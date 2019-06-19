@@ -2,6 +2,7 @@ package com.clocking.monkey;
 
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -48,25 +50,24 @@ public class QrActivity extends AppCompatActivity implements LocationListener {
 
     double latitude, longitude;
 
+    ProgressDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_activity);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         initUI();
-        initScan();
-        CheckPermission();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        initScan();
         assistsBDUtils.resetComment();
         assistsBDUtils.checkAssitance();
-
         getLocation();
     }
 
@@ -74,9 +75,10 @@ public class QrActivity extends AppCompatActivity implements LocationListener {
     protected void onPause() {
         super.onPause();
 
-        btnClockInQR.setEnabled(false);
-
-        locationManager.removeUpdates(this);
+        if(btnClockInQR != null)
+            btnClockInQR.setEnabled(false);
+        if(locationManager != null)
+            locationManager.removeUpdates(this);
     }
 
     public void getLocation() {
@@ -85,12 +87,6 @@ public class QrActivity extends AppCompatActivity implements LocationListener {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 5, this);
         } catch (SecurityException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void CheckPermission() {
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
         }
     }
 
@@ -173,7 +169,6 @@ public class QrActivity extends AppCompatActivity implements LocationListener {
         cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-
                 if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     try {
                         cameraSource.start(cameraView.getHolder());
