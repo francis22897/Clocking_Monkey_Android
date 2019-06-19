@@ -32,7 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/marginHorizontalButton"
         android:background="@color/colorAccent"
-        android:textColor="@color/colorText"
         android:text="@string/qr_button_clockin"
         android:layout_alignParentBottom="true"
         android:enabled="false"/>

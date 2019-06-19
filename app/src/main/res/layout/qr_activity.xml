@@ -30,7 +30,6 @@
 
     <Button
         android:background="@color/colorAccent"
-        android:textColor="@color/colorText"
         android:id="@+id/button_scan_qr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

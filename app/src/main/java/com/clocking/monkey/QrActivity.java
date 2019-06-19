@@ -96,6 +96,7 @@ public class QrActivity extends AppCompatActivity implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+       // Log.i("PRUEBA", longitude + ", " + latitude);
 
         latitude = location.getLatitude();
         longitude = location.getLongitude();
@@ -119,6 +120,7 @@ public class QrActivity extends AppCompatActivity implements LocationListener {
     }
 
     private void setLocation(){
+        Log.i("PRUEBA", longitude + ", " + latitude);
         if(longitude != 0.0 && latitude != 0.0) {
             float metros = 10;
             float[] distance = new float[1];
