@@ -83,6 +83,7 @@ public class AssistsFragment extends Fragment {
                         }
                         adapter.notifyDataSetChanged();
                     }else{
+                        assists.getAssists().clear();
                         Toast.makeText(getContext(), "No hay ninguna asistencia registrada", Toast.LENGTH_LONG).show();
                     }
                     dialog.dismiss();

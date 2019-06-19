@@ -385,4 +385,9 @@ public class EbeaconActivity extends AppCompatActivity implements BeaconConsumer
             mBluetoothAdapter.disable();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        // your code.
+    }
 }

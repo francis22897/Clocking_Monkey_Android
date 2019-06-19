@@ -189,4 +189,9 @@ public class NFCActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        // your code.
+    }
+
 }

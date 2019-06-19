@@ -92,9 +92,10 @@ public class ScanActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-
-
-
+    @Override
+    public void onBackPressed() {
+        // your code.
     }
 }

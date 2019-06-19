@@ -233,6 +233,11 @@ public class QrActivity extends AppCompatActivity implements LocationListener {
 
         return true;
     }
+
+    @Override
+    public void onBackPressed() {
+        // your code.
+    }
 }
 
 
