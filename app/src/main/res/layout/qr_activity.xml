@@ -23,8 +23,8 @@
         android:layout_marginTop="80dp"
         android:layout_marginBottom="30dp"
         android:id="@+id/camera_view"
-        android:layout_width="275dp"
-        android:layout_height="275dp"
+        android:layout_width="@dimen/cameraSize"
+        android:layout_height="@dimen/cameraSize"
         android:layout_gravity="center" />
 
 
@@ -37,6 +37,6 @@
         android:text="@string/clockIn_btn_text"
         android:layout_gravity="center_vertical"
         android:layout_marginHorizontal="@dimen/marginHorizontalButton"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="@dimen/btnClockIn_marginTop"
         android:layout_marginBottom="90dp"/>
 </LinearLayout>

@@ -139,7 +139,7 @@ public class QrActivity extends AppCompatActivity implements LocationListener {
         assistsBDUtils = new AssistsBDUtils(this, this.getLayoutInflater().inflate(R.layout.qr_activity, null), btnClockInQR);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Debes detectar el NFC para poder habilitar el botón")
+        builder.setMessage("Debes leer el QR para poder habilitar el botón")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
