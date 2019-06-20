@@ -123,9 +123,6 @@ public class QrActivity extends AppCompatActivity implements LocationListener {
             Location.distanceBetween(38.094259, -3.631208, latitude, longitude, distance);
             if (distance[0] / metros < 1) {
                 btnClockInQR.setEnabled(true);
-                if (!btnClockInQR.isEnabled()){
-                    btnClockInQR.setEnabled(true);
-                }
             }
         }
     }

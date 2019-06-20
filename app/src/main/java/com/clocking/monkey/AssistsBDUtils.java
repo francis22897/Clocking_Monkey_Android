@@ -103,6 +103,7 @@ public class AssistsBDUtils {
                     }
                 }else{
                     //Si no hay ninguna asistencia establezco el tipo como entrada
+                    date = new Date();
                     type = true;
                     toggleButton();
                     dialog.dismiss();
